@@ -5,6 +5,6 @@ class Sample
 {
 	public static function classof()
 	{
-		return get_called_class();
+		return get_called_class().'testing';
 	}
 }
