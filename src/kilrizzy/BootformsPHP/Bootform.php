@@ -8,6 +8,40 @@ class Bootform{
     }
 
     /**
+     * Generate an html form open component
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public function formOpen($options){
+        //Assign Defaults
+        $defaults = array(
+            'action' => "",
+            'name' => "",
+            'id' => "",
+            'class' => "",
+            'method' => "POST",
+        );
+        //Overwrite Defaults with $options
+        $settings = array_merge($defaults,$options);
+        //
+        $output = '<form>';
+    }
+    public function formOpen($options){
+        //Assign Defaults
+        $defaults = array(
+            'action' => "",
+            'name' => "",
+            'id' => "",
+            'class' => "",
+            'method' => "POST",
+        );
+        //Overwrite Defaults with $options
+        $settings = array_merge($defaults,$options);
+        //
+        $output = '<form>';
+    }
+    /**
      * Generate an html form field component
      *
      * @param  array  $options
@@ -34,8 +68,9 @@ class Bootform{
             'input-prepend' => "", //prepend control data
             'input-append' => "", //append control data
             'base-label-class' => "control-label", //initial label class (in addition to label-class)
-            'base-group-class' => "control-group", //initial group class (in addition to group-class)
+            'base-group-class' => "form-group", //initial group class (in addition to group-class)
             'base-controls-class' => "controls", //initial controls class (in addition to controls-class)
+            'base-input-class' => "form-control",
         );
 
         //Overwrite Defaults with $options
@@ -75,7 +110,7 @@ class Bootform{
     private function makeField($field){
         $output = '';
         //combine additional input attributes
-        $input_attributes = array('class'=>$field['input-class']);
+        $input_attributes = array('class'=>$field['base-input-class'].' '.$field['input-class']);
         $input_attributes = array_merge($input_attributes, $field['input-attributes']);
         $attributes_string_items = array();
         foreach($input_attributes as $input_attribute_name => $input_attribute_value){
@@ -139,6 +174,11 @@ class Bootform{
         if($field['type'] == "file"){
             $output .= Form::file($field['name'],$input_attributes);
         }
+        //SUBMIT
+        if($field['type'] == "submit"){
+            $output .= '<button type="submit" class="btn btn-default">'.$field['value'].'</button>';
+            //$output .= Form::text($field['name'], $field['value'],$input_attributes);
+        }
         //return
         return $output;
     }
@@ -193,7 +233,7 @@ class Bootform{
             }
             //HELP
             if(!empty($field['help'])){
-                $controls_end .= '<span class="help-block">'.$field['help'].'</span>';
+                $controls_end .= '<p class="help-block">'.$field['help'].'</p>';
             }
             //Controls End
             $controls_end .= '</div>';
